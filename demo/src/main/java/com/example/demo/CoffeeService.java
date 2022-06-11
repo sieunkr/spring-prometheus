@@ -13,15 +13,11 @@ import java.util.List;
 @Service
 public class CoffeeService {
 
-    private final MeterRegistry meterRegistry;
     private List<Order> orders = new ArrayList<>();
-
     private final Counter americanoOrderCounter;
     private final Counter latteOrderCounter;
 
-
     public CoffeeService(MeterRegistry meterRegistry) {
-        this.meterRegistry = meterRegistry;
 
         Gauge.builder("coffee.ordersInQueue", orders, Collection::size)
                 .description("Number of unserved orders")
