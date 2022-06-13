@@ -1,7 +1,9 @@
 package com.example.demo;
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,5 +22,18 @@ public class CustomController {
         result += "# TYPE " + name + " " + type + "\n";
         result += name + " " + value + "\n";
         return result;
+    }
+
+
+    @GetMapping("/time")
+    @Timed(value = "eddy.time", description = "Time taken to return...", percentiles = {0.5, 0.90})
+    public String greeting() {
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return "test";
     }
 }
