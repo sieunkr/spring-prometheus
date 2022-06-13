@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import io.micrometer.core.annotation.Counted;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -44,5 +45,11 @@ public class CoffeeService {
         latteOrderCounter.increment();
         latteOrderCounter.increment();
 
+    }
+
+    @Counted(value = "counted.success.test",description = "testCounter")
+    public String countTest() {
+
+        return "counter..";
     }
 }

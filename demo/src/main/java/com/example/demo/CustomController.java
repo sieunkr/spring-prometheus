@@ -3,12 +3,17 @@ package com.example.demo;
 import io.micrometer.core.annotation.Timed;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1/custom")
 public class CustomController {
+
+    private final CoffeeService coffeeService;
+
+    public CustomController(CoffeeService coffeeService) {
+        this.coffeeService = coffeeService;
+    }
 
     @GetMapping(value = "/prometheus", produces="text/plain;charset=utf-8")
     public String test() {
@@ -27,7 +32,7 @@ public class CustomController {
 
     @GetMapping("/time")
     @Timed(value = "eddy.time", description = "Time taken to return...", percentiles = {0.5, 0.90})
-    public String greeting() {
+    public String time() {
 
         try {
             Thread.sleep(1000);
@@ -35,5 +40,11 @@ public class CustomController {
             throw new RuntimeException(e);
         }
         return "test";
+    }
+
+    @GetMapping("/count")
+    public String count() {
+
+        return coffeeService.countTest();
     }
 }
